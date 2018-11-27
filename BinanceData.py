@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Created on Wed Nov 28 00:24:05 2018
+
+@author: adrian
+"""
+
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
 Created on Sun Nov 18 11:52:31 2018
 
 @author: adrian
@@ -14,7 +22,7 @@ import csv
 
 
 
-client = Client("", "")
+client = Client("Syjq3IzBw1c9lcAKtHkdXEFyPBFVULjDLXMlnwqPFce9wQ73szBYLtUIO7gsH1YM", "52d6ZBGnWa9WeltzPiwSgQP5nIfc2Z3SQGzxedUl0Nnp3xZBRF1jzM7W0BYQb8QM")
 
 
 def process_depth(depth_cache):
@@ -72,5 +80,6 @@ if __name__ == '__main__':
     producer.start()
     asks.join()
     bids.join()
+    time.sleep(60*60*24)
     e.set()
 
