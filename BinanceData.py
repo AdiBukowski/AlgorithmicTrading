@@ -14,7 +14,7 @@ import csv
 
 
 
-client = Client("Syjq3IzBw1c9lcAKtHkdXEFyPBFVULjDLXMlnwqPFce9wQ73szBYLtUIO7gsH1YM", "52d6ZBGnWa9WeltzPiwSgQP5nIfc2Z3SQGzxedUl0Nnp3xZBRF1jzM7W0BYQb8QM")
+client = Client("", "")
 
 
 def process_depth(depth_cache):
