@@ -19,19 +19,20 @@ client = Client("Syjq3IzBw1c9lcAKtHkdXEFyPBFVULjDLXMlnwqPFce9wQ73szBYLtUIO7gsH1Y
 
 def process_depth(depth_cache):
     if depth_cache is not None:
-        print("ProducetThread: Adding {} asks and bits.".format(depth_cache.symbol))
-        asks.put(depth_cache.get_asks())
-        bids.put(depth_cache.get_bids())
-        print("ProducetThread: Added!")
+        timestamp = time.time()
+        print("ProducetThread: Adding {} asks and bits at {}".format(depth_cache.symbol, timestamp))
+        asks.put([timestamp,depth_cache.get_asks()])
+        bids.put([timestamp,depth_cache.get_bids()])
+        print("ProducetThread: Added!\n")
     else:
         pass
 
 
-def write_to_csv(order_set, typeof, writer):
+def write_to_csv(timestamp, order_set, typeof, writer):
     for order in order_set:
         l = list(order)
         l.append(typeof)
-        l.append(time.time())
+        l.append(timestamp)
         writer.writerow(l)
 
 def consumer(q, side):
@@ -41,11 +42,12 @@ def consumer(q, side):
         while(not e.isSet()):
             new_item = q.get()
             print(side+"Thread: processing item")
-            new_item_set = set(tuple(l) for l in new_item)
+            new_item_set = set(tuple(l) for l in new_item[1])
+            timestamp = new_item[0]
             new_orders = new_item_set.difference(old_item_set)
-            write_to_csv(new_orders,'open',writer)
+            write_to_csv(timestamp,new_orders,'open',writer)
             closed_orders = old_item_set.difference(new_item_set)
-            write_to_csv(closed_orders,'close',writer)
+            write_to_csv(timestamp,closed_orders,'close',writer)
             old_item_set = new_item_set 
             q.task_done()
             print(side+"Thread: Item processed")
@@ -71,3 +73,4 @@ if __name__ == '__main__':
     asks.join()
     bids.join()
     e.set()
+
